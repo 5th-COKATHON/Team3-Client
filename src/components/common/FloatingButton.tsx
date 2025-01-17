@@ -1,14 +1,28 @@
 import { Fab, styled } from '@mui/material';
 import React from 'react';
 import ModeIcon from '@mui/icons-material/Mode';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const FloatingButton = () => {
+  const [mode, setMode] = React.useState('register');
+
   const navigate = useNavigate();
+
+  const location = useLocation();
 
   const handleClick = () => {
     navigate('/register');
   };
+
+  React.useEffect(() => {
+    if (location.pathname === '/') {
+      setMode('register');
+    } else {
+      setMode('none');
+    }
+  }, [location]);
+
+  if (mode === 'none') return null;
 
   return (
     <StyledFab onClick={handleClick}>
