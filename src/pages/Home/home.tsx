@@ -54,7 +54,6 @@ const home = () => {
       sx={{
         padding: '12px 0',
         width: '100%',
-        height: '100%',
         display: 'flex',
         alignItems: 'center',
         flexDirection: 'column',

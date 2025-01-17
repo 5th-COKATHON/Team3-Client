@@ -29,6 +29,7 @@ body {
 #root {
   max-width: 400px;
   width: 100%;
-  min-height: 100vh;
-  border: 1px solid pink;
+  height: 100vh;
+  overflow-y: scroll;
+  position: relative;
 }
