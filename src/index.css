@@ -1,3 +1,13 @@
+@font-face {
+  font-family: 'Pretendard';
+  font-weight: 400;
+  src: url('./assets/font/Pretendard-Regular.otf') format('opentype');
+}
+
+body {
+  font-family: 'Pretendard';
+}
+
 body {
   margin: 0;
   display: flex;
@@ -6,6 +16,6 @@ body {
 
 #root {
   max-width: 600px;
-  width: 375px;
+  width: 100%;
   min-height: 100vh;
 }
