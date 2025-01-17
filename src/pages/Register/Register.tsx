@@ -3,6 +3,7 @@ import React from 'react';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { CATEGORIE_LIST } from '../../conatant';
 import { api } from '../../axios';
+import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
   const [title, setTitle] = React.useState('');
@@ -10,7 +11,9 @@ const Register = () => {
   const [image, setImage] = React.useState<File | null>(null);
   const [description, setDescription] = React.useState('');
 
-  const handleSubmit = () => {
+  const navigate = useNavigate();
+
+  const handleSubmit = async () => {
     const formData = new FormData();
     formData.append(
       'request',
@@ -31,11 +34,13 @@ const Register = () => {
     }
 
     try {
-      api.post('/activities', formData, {
+      await api.post('/activities', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
+
+      navigate('/');
     } catch (e) {
       console.log(e);
     }
