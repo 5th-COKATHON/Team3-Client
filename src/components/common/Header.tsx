@@ -19,6 +19,9 @@ const Header = () => {
           fontSize: '1.25rem',
           color: '#243763',
         }}
+        onClick={() => {
+          window.location.href = '/';
+        }}
       >
         SnapChain
       </Stack>

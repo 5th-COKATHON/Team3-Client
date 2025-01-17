@@ -3,15 +3,15 @@ import React from 'react';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { CATEGORIE_LIST } from '../../conatant';
 import { api } from '../../axios';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-const Register = () => {
-  const [title, setTitle] = React.useState('');
+const Follow = () => {
   const [category, setCategory] = React.useState(CATEGORIE_LIST[0]);
   const [image, setImage] = React.useState<File | null>(null);
   const [description, setDescription] = React.useState('');
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleSubmit = async () => {
     const formData = new FormData();
@@ -20,8 +20,6 @@ const Register = () => {
       new Blob(
         [
           JSON.stringify({
-            title: title,
-            category: category,
             description: description,
           }),
         ],
@@ -34,36 +32,15 @@ const Register = () => {
     }
 
     try {
-      const res = await api.post('/activities', formData, {
+      await api.post(`/activities/${location.state.id}/threads`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
 
-      const newFormData = new FormData();
-      newFormData.append(
-        'request',
-        new Blob(
-          [
-            JSON.stringify({
-              description: description,
-            }),
-          ],
-          { type: 'application/json' },
-        ),
-      );
-
-      if (image) {
-        newFormData.append('image', image as Blob);
-      }
-
-      await api.post(`/activities/${res.data.data.activityId}/threads`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+      navigate(`/activity/${location.state.id}`, {
+        state: location.state,
       });
-
-      navigate('/');
     } catch (e) {
       console.log(e);
     }
@@ -94,7 +71,7 @@ const Register = () => {
         }}
       >
         <StyledChevron />
-        목표 작성
+        따라하기
       </Box>
     );
   };
@@ -111,8 +88,8 @@ const Register = () => {
           gap: '16px',
         }}
       >
-        <StyledTextFiled placeholder="제목" onChange={(e) => setTitle(e.target.value)} />
-        <StyledSelect value={category} onChange={(e) => setCategory(e.target.value as string)}>
+        <StyledTextFiled placeholder={location.state.title} disabled $background="#EDEDED" />
+        <StyledSelect value={category} disabled>
           {CATEGORIE_LIST.map((category) => (
             <option key={category} value={category}>
               {category}
@@ -193,11 +170,11 @@ const StyledChevron = styled(ChevronLeftIcon)`
   transform: translateY(-50%);
 `;
 
-const StyledTextFiled = styled(TextField)<{ $height?: string }>`
+const StyledTextFiled = styled(TextField)<{ $height?: string; $background?: string }>`
   width: 100%;
   height: ${({ $height }) => $height || '48px'};
   border-radius: 10px;
-  background: #fff;
+  background: ${({ $background }) => $background || '#fff'};
   box-shadow: 0px 0px 4px 0px #243763;
   overflow: hidden;
 
@@ -234,7 +211,7 @@ const StyledSelect = styled(Select)`
   width: 100%;
   height: 48px;
   border-radius: 10px;
-  background: #fff;
+  background: #ededed;
   box-shadow: 0px 0px 4px 0px #243763;
 
   &:focus {
@@ -276,4 +253,4 @@ const StyledImageBox = styled(Box)<{ $image: string }>`
   }
 `;
 
-export default Register;
+export default Follow;

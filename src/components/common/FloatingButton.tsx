@@ -1,31 +1,55 @@
 import { Fab, styled } from '@mui/material';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ModeIcon from '@mui/icons-material/Mode';
 import { useLocation, useNavigate } from 'react-router-dom';
+import FilterNoneIcon from '@mui/icons-material/FilterNone';
 
 const FloatingButton = () => {
-  const [mode, setMode] = React.useState('register');
+  const [mode, setMode] = useState('register');
 
   const navigate = useNavigate();
-
   const location = useLocation();
 
-  const handleClick = () => {
+  const handleClickRegister = () => {
     navigate('/register');
   };
 
-  React.useEffect(() => {
+  const handleClickFollow = () => {
+    navigate('/follow', {
+      state: location.state,
+    });
+  };
+
+  useEffect(() => {
     if (location.pathname === '/') {
       setMode('register');
+    } else if (location.pathname.startsWith('/activity')) {
+      setMode('follow');
     } else {
       setMode('none');
     }
   }, [location]);
 
-  if (mode === 'none') return null;
+  if (mode === 'none') {
+    return null;
+  }
+
+  if (mode === 'follow') {
+    return (
+      <StyledFab onClick={handleClickFollow}>
+        <FilterNoneIcon
+          sx={{
+            color: '#FFFFFF',
+            fontSize: '24px',
+          }}
+        />
+        <span>따라하기</span>
+      </StyledFab>
+    );
+  }
 
   return (
-    <StyledFab onClick={handleClick}>
+    <StyledFab onClick={handleClickRegister}>
       <ModeIcon
         sx={{
           color: '#FFFFFF',
@@ -38,9 +62,9 @@ const FloatingButton = () => {
 };
 
 const StyledFab = styled(Fab)`
-  position: absolute;
+  position: sticky;
   bottom: 20px;
-  right: 20px;
+  left: 280px;
   width: 70px;
   height: 70px;
   border-radius: 35px;
