@@ -4,6 +4,7 @@ import { fetcher } from '../../fetcher';
 import { useLocation, useParams } from 'react-router-dom';
 import { Box, Container } from '@mui/material';
 import styled from '@emotion/styled';
+import { ReactComponent as Chain } from '../../assets/image/chain.svg';
 
 const Activity = () => {
   const { id } = useParams();
@@ -39,10 +40,11 @@ const Activity = () => {
           padding: '12px 0',
         }}
       >
-        {thread?.data?.activityThreadResponses?.map((data: any) => (
+        {thread?.data?.activityThreadResponses?.map((data: any, index: number) => (
           <ImageBox key={data.description}>
             <img src={data.imageUrl} alt={data.description} />
             <span>{data.description}</span>
+            {index !== thread?.data?.activityThreadResponses?.length - 1 && <Chain />}
           </ImageBox>
         ))}
       </Box>
@@ -93,6 +95,15 @@ const ImageBox = styled.div`
     font-family: Pretendard;
     font-size: 16px;
     font-weight: 600;
+    z-index: 1000;
+  }
+
+  svg {
+    position: absolute;
+    bottom: -44px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
   }
 `;
 

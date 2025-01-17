@@ -10,7 +10,6 @@ const Header = () => {
         alignItems: 'center',
         padding: '0 1rem',
         height: '60px',
-        border: '1px solid pink',
       }}
     >
       <Stack
